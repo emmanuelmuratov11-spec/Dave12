@@ -1,6 +1,26 @@
   /* Settings (booking link, email) live in config.js */
   const CONFIG = window.MMG_CONFIG || {};
 
+  /* ---------- Video ads: play only while on screen (saves data), never with sound ---------- */
+  (function () {
+    const vids = document.querySelectorAll(".ad-video");
+    if (!vids.length) return;
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce || !("IntersectionObserver" in window)) {
+      // no autoplay: the main ad gets play controls, the slider keeps its still frame
+      vids.forEach(function (v) { if (!v.closest(".compare")) { v.controls = true; v.preload = "metadata"; } });
+      return;
+    }
+    const io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        const v = en.target;
+        if (en.isIntersecting) { const p = v.play(); if (p && p.catch) p.catch(function () {}); }
+        else v.pause();
+      });
+    }, { threshold: 0.25 });
+    vids.forEach(function (v) { io.observe(v); });
+  })();
+
   /* ---------- Before / after slider ---------- */
   (function () {
     const c = document.querySelector(".compare");

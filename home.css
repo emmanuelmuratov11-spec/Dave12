@@ -303,32 +303,24 @@
   .tile.small .ico { width: 46px; height: 46px; border-radius: 14px; background: var(--purple-soft); display: grid; place-items: center; margin-bottom: 18px; }
   .tile.small .ico svg { width: 22px; height: 22px; stroke: var(--purple); fill: none; stroke-width: 1.8; }
   .tile.small p { color: var(--muted); }
-  /* Ad creation: three example ads fanned out */
-  .eg { position: absolute; top: 18px; left: 18px; z-index: 3; padding: 5px 11px; border-radius: 999px; background: rgba(255, 255, 255, .1); color: rgba(255, 255, 255, .75); font-size: .75rem; font-weight: 600; }
-  .fan { display: flex; justify-content: center; align-items: center; width: 100%; padding: 26px 0 6px; }
-  .fan img {
-    width: 34%; max-width: 210px; height: auto; aspect-ratio: 4 / 5; object-fit: cover;
-    border-radius: 12px; border: 1px solid rgba(255, 255, 255, .14);
-    box-shadow: 0 22px 40px -18px rgba(0, 0, 0, .85);
-    transition: transform .45s cubic-bezier(.2, .8, .2, 1);
+  /* Ad creation: a real video ad */
+  .eg { position: absolute; top: 18px; left: 18px; z-index: 3; padding: 5px 11px; border-radius: 999px; background: rgba(255, 255, 255, .14); color: rgba(255, 255, 255, .85); font-size: .75rem; font-weight: 600; }
+  .reel {
+    width: 100%; max-width: 560px; aspect-ratio: 16 / 9; margin-top: 26px;
+    border-radius: 16px; overflow: hidden; background: #1A1A22;
+    border: 1px solid rgba(255, 255, 255, .14);
+    box-shadow: 0 28px 50px -24px rgba(0, 0, 0, .9);
   }
-  .fan img:nth-child(1) { transform: rotate(-8deg) translate(22px, 12px); }
-  .fan img:nth-child(2) { position: relative; z-index: 2; transform: translateY(-4px) scale(1.07); }
-  .fan img:nth-child(3) { transform: rotate(8deg) translate(-22px, 12px); }
-  @media (hover: hover) {
-    .tile:hover .fan img:nth-child(1) { transform: rotate(-11deg) translate(4px, 8px); }
-    .tile:hover .fan img:nth-child(2) { transform: translateY(-12px) scale(1.1); }
-    .tile:hover .fan img:nth-child(3) { transform: rotate(11deg) translate(-4px, 8px); }
-  }
+  .reel video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
   /* Ad makeovers: drag to compare before and after */
   .compare {
     --pos: 50%;
-    position: relative; width: min(100%, 290px); aspect-ratio: 4 / 5; margin-top: 4px;
+    position: relative; width: 100%; max-width: 420px; aspect-ratio: 4 / 3; margin-top: 30px;
     border-radius: 16px; overflow: hidden; cursor: ew-resize; touch-action: pan-y; user-select: none; -webkit-user-select: none;
     box-shadow: 0 24px 44px -20px rgba(10, 10, 50, .7);
   }
-  .compare img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; -webkit-user-drag: none; }
+  .compare img, .compare video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; -webkit-user-drag: none; }
   .c-after { position: absolute; inset: 0; clip-path: inset(0 0 0 var(--pos)); }
   .c-line { position: absolute; top: 0; bottom: 0; left: var(--pos); width: 3px; margin-left: -1.5px; background: #fff; pointer-events: none; box-shadow: 0 0 14px rgba(0, 0, 0, .35); }
   .c-line i { position: absolute; top: 50%; left: 50%; width: 42px; height: 42px; margin: -21px 0 0 -21px; border-radius: 50%; background: #fff; box-shadow: 0 8px 18px rgba(0, 0, 0, .35); display: grid; place-items: center; }

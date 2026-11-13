@@ -9,6 +9,7 @@
 | `404.html` | Shown when someone opens a link that doesn't exist |
 | `config.js` | Settings: booking link, business email |
 | `home.css`, `home.js` | Look and behavior of the home page |
+| `motion.js` | 3D scroll effects on the home page (turned off for visitors who prefer reduced motion) |
 | `contact.js`, `pages.js` | Behavior of the contact, privacy and terms pages |
 | `pages.css` | Styles for the extra pages |
 | `_headers` | Security rules Netlify sends with every page |

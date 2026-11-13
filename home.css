@@ -114,6 +114,9 @@
   /* Hero visual: your marketing running on its own */
   .stage {
     position: relative; aspect-ratio: 1 / 1.05; width: 100%; max-width: 560px; margin: 0 auto;
+  }
+  .stage-bg {
+    position: absolute; inset: 0;
     border-radius: var(--radius-xl); overflow: hidden;
     background:
       radial-gradient(55% 45% at 22% 24%, rgba(123, 63, 255, .55), transparent 70%),
@@ -121,7 +124,7 @@
       radial-gradient(60% 60% at 60% 30%, rgba(255, 255, 255, .9), transparent 70%),
       #ECE6FF;
   }
-  .stage::after {   /* fine rings, like ripples */
+  .stage-bg::after {   /* fine rings, like ripples */
     content: ""; position: absolute; left: 50%; top: 50%; width: 140%; aspect-ratio: 1;
     transform: translate(-50%, -50%);
     background: repeating-radial-gradient(circle, transparent 0 46px, rgba(255, 255, 255, .45) 46px 47px);
@@ -433,9 +436,117 @@
   .site-footer a { text-decoration: none; }
   .site-footer a:hover { color: var(--ink); }
 
+  /* ============================================================
+     3D SCROLL EFFECTS
+     Everything below only applies when motion.js adds .motion to the page
+     (it doesn't for people who turned on "reduce motion").
+     ============================================================ */
+
+  /* Ribbons: second ribbon only exists in motion mode */
+  .ribbon-b { display: none; }
+  .motion .ribbons { position: relative; overflow: hidden; padding: 88px 0 56px; }
+  .motion .band, .motion .ribbon-b { width: 124%; margin-left: -12%; }
+  .motion .band { position: relative; z-index: 2; transform: rotate(-3deg); padding: 22px 0; box-shadow: 0 24px 40px -24px rgba(10, 10, 16, .6); }
+  .motion .ribbon-b {
+    display: block; position: absolute; left: 0; top: 92px; z-index: 1;
+    transform: translateY(-50%) rotate(3deg);
+    background: var(--grad); color: #fff; padding: 15px 0;
+    font-weight: 700; font-size: clamp(.95rem, 2.2vw, 1.15rem); letter-spacing: -0.02em;
+  }
+  .ribbon-b ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 0 26px; }
+  .ribbon-b li { display: flex; align-items: center; gap: 26px; white-space: nowrap; }
+  .ribbon-b li::before { content: "\2726"; opacity: .7; font-size: .9em; }
+  .motion .band ul { flex-wrap: nowrap; justify-content: flex-start; width: max-content; gap: 0 26px; transform: translateX(calc(var(--off, 0px) * -1)); will-change: transform; }
+  .motion .band li { white-space: nowrap; }
+  .motion .band li::before { content: "\2726"; display: inline; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; font-size: .9em; }
+  .motion .band li:first-child::before { content: "\2726"; }
+  .motion .ribbon-b ul { width: max-content; transform: translateX(calc(-40% + var(--off, 0px))); will-change: transform; }
+
+  /* Hero: the stage is a 3D scene with layers at different depths */
+  .stage-wrap { perspective: 1400px; }
+  .motion .stage {
+    transform-style: preserve-3d;
+    transform: translateY(var(--sy, 0px)) rotateX(var(--rx, 8deg)) rotateY(var(--ry, -12deg));
+    will-change: transform;
+  }
+  .motion .stage-bg { box-shadow: 0 60px 90px -50px rgba(40, 20, 120, .55); }
+  .motion .stage .phone { translate: 0 0 70px; }
+  .motion .stage .c1 { translate: 0 0 140px; }
+  .motion .stage .c2 { translate: 0 0 115px; }
+  .motion .stage .c3 { translate: 0 0 160px; }
+  .motion .stage .c4 { translate: 0 0 95px; }
+  @media (max-width: 560px) {
+    .motion .stage .phone { translate: 0 0 40px; }
+    .motion .stage .c1, .motion .stage .c2, .motion .stage .c3, .motion .stage .c4 { translate: 0 0 70px; }
+  }
+
+  /* Headline: words flip up one after another on load */
+  .motion .hero h1 .w { display: inline-block; perspective: 700px; }
+  .motion .hero h1 .w > span {
+    display: inline-block; transform-origin: 50% 100%;
+    animation: word .8s cubic-bezier(.2, .8, .2, 1) both;
+    animation-delay: calc(var(--i, 0) * 55ms + 60ms);
+  }
+  @keyframes word { from { opacity: 0; transform: translateY(.5em) rotateX(-75deg); } to { opacity: 1; transform: none; } }
+
+  /* Sections and cards flip up into place as you scroll to them */
+  .motion [data-reveal] {
+    opacity: 0;
+    transform: perspective(1000px) translateY(46px) rotateX(14deg);
+    transform-origin: 50% 100%;
+    transition: opacity .7s ease var(--d, 0s), transform .9s cubic-bezier(.2, .8, .2, 1) var(--d, 0s);
+  }
+  .motion [data-reveal].in { opacity: 1; transform: none; }
+
+  /* Steps: the connecting line draws itself */
+  @media (min-width: 900px) {
+    .motion .steps li:not(:last-child)::after { transform: scaleX(0); transform-origin: 0 50%; transition: transform .6s ease .55s; }
+    .motion .steps li.in:not(:last-child)::after { transform: scaleX(1); }
+  }
+
+  /* Service tiles tilt toward the cursor with a soft shine */
+  .motion .tile[data-reveal].in { transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); }
+  .motion .tile.tilting { transition: transform .12s linear, opacity .7s ease; }
+  .motion .tile::before {
+    content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; border-radius: inherit;
+    background: radial-gradient(420px circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, .2), transparent 45%);
+    opacity: 0; transition: opacity .3s ease;
+  }
+  .motion .tile.light::before, .motion .tile.small::before, .motion .tile.lav::before {
+    background: radial-gradient(420px circle at var(--gx, 50%) var(--gy, 50%), rgba(106, 53, 245, .1), transparent 45%);
+  }
+  .motion .tile.tilting::before { opacity: 1; }
+
+  /* Final card straightens up as you reach it */
+  .motion .final-card {
+    transform: perspective(1400px) rotateX(calc((1 - var(--fp, 1)) * 20deg)) scale(calc(.88 + var(--fp, 1) * .12));
+    transform-origin: 50% 100%;
+    will-change: transform;
+  }
+
+  /* Thin progress line under the header */
+  .progress-bar { display: none; }
+  .motion .progress-bar {
+    display: block; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+    background: var(--grad); transform-origin: 0 50%; transform: scaleX(var(--p, 0));
+  }
+
+  /* Floating "Book your call" button on phones */
+  .float-cta { display: none; }
+  @media (max-width: 760px) {
+    .float-cta {
+      display: inline-flex; position: fixed; z-index: 30; left: 50%;
+      bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+      transform: translate(-50%, 160%); transition: transform .4s cubic-bezier(.2, .8, .2, 1);
+      box-shadow: 0 16px 36px -10px rgba(90, 50, 240, .75);
+    }
+    .float-cta.show, .float-cta.show:hover { transform: translate(-50%, 0); }
+  }
+
   @media (min-width: 760px) { body { font-size: 18px; } }
 
   @media (prefers-reduced-motion: reduce) {
+    .float-cta { transition: none; }
     html { scroll-behavior: auto; }
     .phone, .chip { animation: none; }
     .btn, .bar i, .faq summary::after { transition: none; }

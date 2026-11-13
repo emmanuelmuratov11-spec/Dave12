@@ -33,6 +33,7 @@
     </nav>
     <a class="btn btn-small btn-dark" href="#apply">Book a call</a>
   </div>
+  <div class="progress-bar" aria-hidden="true"></div>
 </header>
 
 <main id="top">
@@ -51,7 +52,9 @@
       </div>
 
       <!-- Illustration of the system working: a post goes out, leads come in -->
+      <div class="stage-wrap">
       <div class="stage" role="img" aria-label="Illustration: a social post goes out while new applications, booked calls and follow-up emails come in automatically">
+        <div class="stage-bg" aria-hidden="true"></div>
         <div class="phone">
           <div class="phone-top">
             <span class="mini"><svg viewBox="0 0 40 40"><path d="M10.5 30.5V20a4.75 4.75 0 0 1 9.5 0v6M20 20a4.75 4.75 0 0 1 9.5 0v10.5" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="20" cy="10" r="3" fill="#fff"/></svg></span>
@@ -85,18 +88,30 @@
           <span><b>Reel posted</b><small>On schedule</small></span>
         </div>
       </div>
+      </div>
     </div>
   </section>
 
   <!-- ================= BAND ================= -->
-  <div class="band" aria-label="What we do">
-    <ul>
-      <li>Ad creation</li>
-      <li>Ad makeovers</li>
-      <li>Websites and design</li>
-      <li>AI for your business</li>
-      <li>Paid ads</li>
-    </ul>
+  <div class="ribbons">
+    <div class="ribbon-b" aria-hidden="true">
+      <ul>
+        <li>More booked calls</li>
+        <li>Ads that convert</li>
+        <li>Less guesswork</li>
+        <li>Built for small businesses</li>
+        <li>Powered by AI</li>
+      </ul>
+    </div>
+    <div class="band" aria-label="What we do">
+      <ul>
+        <li>Ad creation</li>
+        <li>Ad makeovers</li>
+        <li>Websites and design</li>
+        <li>AI for your business</li>
+        <li>Paid ads</li>
+      </ul>
+    </div>
   </div>
 
   <!-- ================= HOW IT WORKS ================= -->
@@ -344,6 +359,8 @@
 
 </main>
 
+<a class="btn float-cta" href="#apply" tabindex="-1" aria-hidden="true">Book your call</a>
+
 <footer class="site-footer">
   <div class="wrap">
     <p>&copy; <span data-year>2026</span> Mindful Marketing Group</p>
@@ -352,5 +369,6 @@
 </footer>
 
 <script src="home.js"></script>
+<script src="motion.js"></script>
 </body>
 </html>

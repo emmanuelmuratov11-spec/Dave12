@@ -711,7 +711,7 @@
                 <button type="submit" class="btn" id="nextBtn">Continue</button>
               </div>
               <p class="form-status" id="formStatus" role="alert"></p>
-              <p class="fine">By continuing you agree to our <a href="terms.html" target="_blank" rel="noopener">Terms</a> and <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+              <p class="fine">By continuing you agree to our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a>.</p>
             </form>
           </div>
 
@@ -926,6 +926,28 @@
       }
       card.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
     }
+
+    /* Remember answers in this tab, so tapping Terms or Privacy and coming back doesn't lose them */
+    const SAVE_KEY = "mmg-application";
+    function saveAnswers() {
+      try {
+        const o = {};
+        new FormData(form).forEach(function (v, k) { if (k !== "bot-field") o[k] = v; });
+        sessionStorage.setItem(SAVE_KEY, JSON.stringify(o));
+      } catch (e) {}
+    }
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(SAVE_KEY) || "{}");
+      Object.keys(saved).forEach(function (k) {
+        const el = form.elements.namedItem(k);
+        if (el && el.name !== "bot-field") el.value = saved[k];
+      });
+    } catch (e) {}
+    form.addEventListener("input", saveAnswers);
+    form.addEventListener("change", saveAnswers);
+    form.addEventListener("submit", function () { setTimeout(function () {
+      if (document.getElementById("applyCard").classList.contains("unlocked")) { try { sessionStorage.removeItem(SAVE_KEY); } catch (e) {} }
+    }, 1500); });
 
     show(0);
   })();

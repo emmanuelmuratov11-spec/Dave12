@@ -65,7 +65,7 @@
         </label>
         <button class="btn" type="submit" id="sendBtn">Send message</button>
         <p class="form-status" id="formStatus" role="alert"></p>
-        <p class="fine">By sending, you agree to our <a href="terms.html" target="_blank" rel="noopener">Terms</a> and <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+        <p class="fine">By sending, you agree to our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a>.</p>
       </form>
 
       <div class="sent" id="sentMsg" hidden>
@@ -157,6 +157,24 @@
       }
       form.hidden = true;
       document.getElementById("sentMsg").hidden = false;
+      try { sessionStorage.removeItem(SAVE_KEY); } catch (e) {}
+    });
+
+    /* Remember what was typed in this tab, so tapping Terms or Privacy and coming back doesn't lose it */
+    var SAVE_KEY = "mmg-contact";
+    try {
+      var saved = JSON.parse(sessionStorage.getItem(SAVE_KEY) || "{}");
+      Object.keys(saved).forEach(function (k) {
+        var el = form.elements.namedItem(k);
+        if (el && el.name !== "bot-field") el.value = saved[k];
+      });
+    } catch (e) {}
+    form.addEventListener("input", function () {
+      try {
+        var o = {};
+        new FormData(form).forEach(function (v, k) { if (k !== "bot-field") o[k] = v; });
+        sessionStorage.setItem(SAVE_KEY, JSON.stringify(o));
+      } catch (e) {}
     });
   })();
 </script>

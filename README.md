@@ -14,7 +14,7 @@
 | `pages.css` | Styles for the extra pages |
 | `_headers` | Security rules Netlify sends with every page |
 | `logo.svg` | Logo and browser-tab icon |
-| `img/` | The sneaker video ad (`sneaker-ad.mp4`), its still frame, and the "before" image for the makeover slider. To swap in a new video, keep it short (3–6 seconds), silent and under about 1 MB, and use the same file name |
+| `img/` | The two example video ads (`app-ad.mp4`, `sneaker-ad.mp4`) and their still frames. To swap one, keep it silent and under about 1 MB, and use the same file name |
 
 ## Before going live
 

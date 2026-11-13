@@ -14,6 +14,7 @@
 | `pages.css` | Styles for the extra pages |
 | `_headers` | Security rules Netlify sends with every page |
 | `logo.svg` | Logo and browser-tab icon |
+| `img/` | Example ads shown in the services section. To swap in new ones, replace the files and keep the same names (600×750 JPG works best) |
 
 ## Before going live
 

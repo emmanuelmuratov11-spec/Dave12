@@ -1,6 +1,29 @@
   /* Settings (booking link, email) live in config.js */
   const CONFIG = window.MMG_CONFIG || {};
 
+  /* ---------- Before / after slider ---------- */
+  (function () {
+    const c = document.querySelector(".compare");
+    if (!c) return;
+    const range = c.querySelector(".c-range");
+    let dragging = false;
+    function set(p) {
+      p = Math.max(0, Math.min(100, p));
+      c.style.setProperty("--pos", p.toFixed(1) + "%");
+      range.value = Math.round(p);
+    }
+    function fromEvent(e) { const r = c.getBoundingClientRect(); return (e.clientX - r.left) / r.width * 100; }
+    c.addEventListener("pointerdown", function (e) {
+      dragging = true; c.dataset.touched = "1";
+      try { c.setPointerCapture(e.pointerId); } catch (err) {}
+      set(fromEvent(e));
+    });
+    c.addEventListener("pointermove", function (e) { if (dragging) set(fromEvent(e)); });
+    ["pointerup", "pointercancel", "lostpointercapture"].forEach(function (t) { c.addEventListener(t, function () { dragging = false; }); });
+    range.addEventListener("input", function () { c.dataset.touched = "1"; set(+range.value); });
+    window.MMG_setCompare = set;   // used by motion.js for a one-time "drag me" hint
+  })();
+
   /* ---------- Preview calendar (shown while locked) ---------- */
   (function () {
     const cal = document.getElementById("cal");

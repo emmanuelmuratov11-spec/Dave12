@@ -70,7 +70,7 @@
 
   /* ---------- Service tiles tilt toward the cursor ---------- */
   if (finePointer) {
-    document.querySelectorAll(".bento .tile").forEach(function (t) {
+    document.querySelectorAll(".bento .tile:not([data-no-tilt])").forEach(function (t) {
       t.addEventListener("pointermove", function (e) {
         if (!t.classList.contains("in")) return;
         var r = t.getBoundingClientRect();
@@ -87,6 +87,25 @@
         t.style.setProperty("--ry", "0deg");
       });
     });
+  }
+
+  /* ---------- Before/after slider: a one-time "drag me" hint ---------- */
+  var cmp = document.querySelector(".compare");
+  if (cmp && window.MMG_setCompare) {
+    var hintIO = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      hintIO.disconnect();
+      setTimeout(function () {
+        var start = performance.now(), dur = 1800;
+        (function step(now) {
+          if (cmp.dataset.touched) return;            // stop if they already grabbed it
+          var t = Math.min(1, (now - start) / dur);
+          window.MMG_setCompare(t < 1 ? 50 + Math.sin(t * Math.PI * 2) * 32 : 50);
+          if (t < 1) requestAnimationFrame(step);
+        })(start);
+      }, 700);
+    }, { threshold: 0.6 });
+    hintIO.observe(cmp);
   }
 
   /* ---------- Ribbons: repeat the words so they can slide ---------- */

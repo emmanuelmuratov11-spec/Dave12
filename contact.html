@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact | Mindful Marketing Group</title>
+<meta name="description" content="Get in touch with Mindful Marketing Group.">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="pages.css">
+<script src="config.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="Mindful Marketing Group home">
+      <svg viewBox="0 0 40 40" aria-hidden="true">
+        <defs><linearGradient id="mmgGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#8A4DFF"/><stop offset="1" stop-color="#2F6BFF"/></linearGradient></defs>
+        <rect width="40" height="40" rx="11" fill="url(#mmgGrad)"/>
+        <path d="M10.5 30.5V20a4.75 4.75 0 0 1 9.5 0v6M20 20a4.75 4.75 0 0 1 9.5 0v10.5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="20" cy="10" r="2.4" fill="#fff"/>
+      </svg>
+      <span><b>Mindful</b><small>Marketing Group</small></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="index.html#how">How it works</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="contact.html" aria-current="page">Contact</a>
+    </nav>
+    <a class="btn btn-small btn-dark" href="index.html#apply">Book a call</a>
+  </div>
+</header>
+
+<main>
+  <section class="page-top">
+    <div class="wrap">
+      <h1>Get in touch</h1>
+      <p>Have a question about ads, websites or using AI in your business? Send us a message and we'll get back to you.</p>
+    </div>
+  </section>
+
+  <div class="wrap contact-grid">
+    <div class="card">
+      <form id="contactForm" name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" novalidate>
+        <p hidden><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+        <label>Full name
+          <input name="name" autocomplete="name" placeholder="Jane Smith" required>
+          <span class="err" aria-live="polite"></span>
+        </label>
+        <label>Email
+          <input name="email" type="email" autocomplete="email" placeholder="jane@company.com" required>
+          <span class="err" aria-live="polite"></span>
+        </label>
+        <label>Phone (optional)
+          <input name="phone" type="tel" autocomplete="tel" placeholder="(555) 123-4567">
+          <span class="err" aria-live="polite"></span>
+        </label>
+        <label>Message
+          <textarea name="message" placeholder="Tell us a little about your business and what you need." required></textarea>
+          <span class="err" aria-live="polite"></span>
+        </label>
+        <button class="btn" type="submit" id="sendBtn">Send message</button>
+        <p class="form-status" id="formStatus" role="alert"></p>
+        <p class="fine">By sending, you agree to our <a href="terms.html" target="_blank" rel="noopener">Terms</a> and <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+      </form>
+
+      <div class="sent" id="sentMsg" hidden>
+        <div class="tick"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+        <h2>Message sent</h2>
+        <p>Thanks for reaching out. We'll get back to you soon.</p>
+      </div>
+    </div>
+
+    <aside class="side">
+      <div class="card dark">
+        <h2>Ready to talk?</h2>
+        <p>Skip the back and forth. Answer a few questions and book a free 30-minute strategy call.</p>
+        <a class="btn" href="index.html#apply">Book your call</a>
+      </div>
+      <div class="card" id="emailCard" hidden>
+        <h2>Email us</h2>
+        <p style="color:var(--muted);margin:0">Prefer email? Write to us directly.</p>
+        <a class="email-link" id="emailLink" href="#"></a>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>&copy; <span data-year>2026</span> Mindful Marketing Group</p>
+    <nav aria-label="Footer"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms</a><a href="contact.html" aria-current="page">Contact</a></nav>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var C = window.MMG_CONFIG || {};
+    if (C.contactEmail) {
+      var link = document.getElementById("emailLink");
+      link.href = "mailto:" + C.contactEmail; link.textContent = C.contactEmail;
+      document.getElementById("emailCard").hidden = false;
+    }
+
+    var form = document.getElementById("contactForm");
+    var btn = document.getElementById("sendBtn");
+    var status = document.getElementById("formStatus");
+    var messages = {
+      name: "Enter your full name.",
+      email: "Enter an email like name@company.com.",
+      phone: "Enter a phone number with at least 7 digits, or leave it empty.",
+      message: "Write a short message."
+    };
+
+    function valid(input) {
+      var v = input.value.trim();
+      if (!input.required && !v) return true;
+      if (!v) return false;
+      if (input.type === "email") return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+      if (input.type === "tel") return v.replace(/\D/g, "").length >= 7;
+      return true;
+    }
+    function mark(input, ok) {
+      var label = input.closest("label");
+      label.classList.toggle("invalid", !ok);
+      label.querySelector(".err").textContent = ok ? "" : messages[input.name];
+      input.setAttribute("aria-invalid", ok ? "false" : "true");
+    }
+
+    form.addEventListener("input", function (e) {
+      var label = e.target.closest("label");
+      if (label && label.classList.contains("invalid") && valid(e.target)) mark(e.target, true);
+    });
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      status.textContent = "";
+      var firstBad = null;
+      form.querySelectorAll("input, textarea").forEach(function (input) {
+        if (input.name === "bot-field") return;
+        var ok = valid(input); mark(input, ok);
+        if (!ok && !firstBad) firstBad = input;
+      });
+      if (firstBad) { firstBad.focus(); return; }
+
+      btn.disabled = true; btn.textContent = "Sending…";
+      var ok = false;
+      try { ok = await window.MMG_sendForm(form, "contact"); } catch (err) { ok = false; }
+      if (!ok) {
+        btn.disabled = false; btn.textContent = "Send message";
+        status.textContent = "Your message didn't send. Check your connection and try again.";
+        return;
+      }
+      form.hidden = true;
+      document.getElementById("sentMsg").hidden = false;
+    });
+  })();
+</script>
+</body>
+</html>

@@ -114,26 +114,30 @@
       if (current < steps.length - 1) { show(current + 1); steps[current].querySelector("input, select, textarea").focus(); return; }
 
       nextBtn.disabled = true; nextBtn.textContent = "Sending…";
-      let sent = false;
-      try { sent = await window.MMG_sendForm(form, "application"); } catch (err) { sent = false; }
-      if (!sent) {
-        nextBtn.disabled = false; nextBtn.textContent = "Submit application";
-        status.textContent = "Your application didn't send. Check your connection and try again.";
-        return;
-      }
-      unlock(form.elements.namedItem("name").value.trim().split(" ")[0]);
+      try { await window.MMG_sendForm(form, "application"); } catch (err) {}
+      // Open the calendar even if the answers didn't send: the booking is what matters,
+      // and Calendly still collects their name and email.
+      const fullName = form.elements.namedItem("name").value.trim();
+      nextBtn.textContent = "Application sent";
+      backBtn.hidden = true;
+      document.getElementById("thanksTitle").textContent = "Thanks, " + fullName.split(" ")[0] + ". Pick a time for your call.";
+      openCalendar(fullName, form.elements.namedItem("email").value.trim());
     });
 
-    function unlock(firstName) {
+    /* "Skip the questions" link: straight to the calendar */
+    const skip = document.getElementById("skipToCal");
+    if (skip) skip.addEventListener("click", function () {
+      document.getElementById("thanksTitle").textContent = "Pick a time for your call";
+      openCalendar(form.elements.namedItem("name").value.trim(), form.elements.namedItem("email").value.trim());
+    });
+
+    function openCalendar(fullName, email) {
       const card = document.getElementById("applyCard");
       const pane = document.getElementById("bookPane");
       card.classList.add("unlocked");
       pane.classList.remove("locked");
       document.getElementById("tabForm").className = "done";
       document.getElementById("tabBook").className = "on";
-      document.getElementById("thanksTitle").textContent = "Thanks, " + firstName + ". Application received.";
-      nextBtn.disabled = true; nextBtn.textContent = "Application sent";
-      backBtn.hidden = true;
 
       const embed = document.getElementById("calEmbed");
       document.getElementById("cal").parentElement.style.display = "none";
@@ -141,10 +145,17 @@
       let calUrl = null;
       try {
         const u = new URL(CONFIG.calendarUrl || "");
-        if (u.protocol === "https:") calUrl = u.href;   // only secure links are embedded
+        if (u.protocol === "https:") {                  // only secure links are embedded
+          if (fullName) u.searchParams.set("name", fullName);   // fills these in on Calendly
+          if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) u.searchParams.set("email", email);
+          u.searchParams.set("hide_gdpr_banner", "1");
+          u.searchParams.set("embed_type", "Inline");
+          if (location.hostname) u.searchParams.set("embed_domain", location.hostname);
+          calUrl = u.href;
+        }
       } catch (e) {}
       if (calUrl) {
-        intro.textContent = "Pick a time below for your strategy call.";
+        intro.textContent = "Your 30-minute strategy call is free. Choose a day and time below.";
         const frame = document.createElement("iframe");
         frame.src = calUrl;
         frame.title = "Book your call";

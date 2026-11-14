@@ -4,7 +4,7 @@
 window.MMG_CONFIG = {
   // Your booking link, e.g. "https://calendly.com/your-name/strategy-call".
   // Leave empty and people are told you'll email them to set up a time.
-  calendarUrl: "",
+  calendarUrl: "https://calendly.com/mindfulmarketinggroup-support/30min",
 
   // Your business email, shown on the Contact page, e.g. "hello@mindfulmarketinggroup.com".
   contactEmail: "",

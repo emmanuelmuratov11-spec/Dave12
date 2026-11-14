@@ -75,7 +75,7 @@
       try { ok = await window.MMG_sendForm(form, "contact"); } catch (err) { ok = false; }
       if (!ok) {
         btn.disabled = false; btn.textContent = "Send message";
-        status.textContent = "Your message didn't send. Check your connection and try again.";
+        status.innerHTML = 'Your message didn\'t send. Try again, or <a href="index.html#apply">book a call</a> instead.';
         return;
       }
       try { sessionStorage.removeItem(SAVE_KEY); } catch (e) {}

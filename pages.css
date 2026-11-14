@@ -236,6 +236,7 @@ input:focus, textarea:focus { outline: none; border-color: var(--purple); box-sh
 .topic input:checked + span { background: var(--grad); color: #fff; border-color: transparent; }
 .topic input:focus-visible + span { outline: 2px solid var(--purple); outline-offset: 3px; }
 .form-status { color: var(--error); font-size: .9rem; margin: 0; }
+.form-status a { color: inherit; font-weight: 700; text-decoration: underline; }
 .fine { margin: 0; color: var(--faint); font-size: .8rem; text-align: center; }
 .fine a { color: inherit; }
 .sent { text-align: center; padding: 34px 0; }

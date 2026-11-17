@@ -242,7 +242,7 @@
   .bento { display: grid; gap: 14px; }
   .tile { border-radius: var(--radius-lg); padding: 28px 26px; position: relative; overflow: hidden; min-height: 250px; display: flex; flex-direction: column; justify-content: flex-end; }
   .tile p { margin-top: 8px; max-width: 30em; }
-  .tile.dark { background: var(--ink); color: #fff; }
+  .tile.dark { background: linear-gradient(150deg, #2B1A6B 0%, #1E1450 55%, #1A1F5C 100%); color: #fff; }
   .tile.dark h3 { color: #fff; }
   .tile.dark p { color: rgba(255, 255, 255, .7); }
   .tile.grad { background: var(--grad); color: #fff; }

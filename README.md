@@ -19,7 +19,7 @@
 ## Before going live
 
 1. In `config.js`, add your business email (`contactEmail`). Your Calendly link (`calendarUrl`) is already set: every "Book a call" button leads to the application, which ends on your Calendly calendar, and there's a "Pick a time now" link for people who want to skip the questions.
-2. In `terms.html`, replace `[your state]` under "Governing law".
+2. `terms.html` names New York as the governing law. Change it if your business is registered in another state.
 
 ## Getting form submissions (Netlify Forms, free)
 

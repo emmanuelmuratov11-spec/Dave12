@@ -328,6 +328,25 @@
     .showcase .reel { width: 100%; }
   }
 
+  /* four concept ads: phone, two wide clips, phone */
+  .showcase { gap: 20px; align-items: center; }
+  .showcase .phone-frame { width: 24%; max-width: 190px; }
+  .phone-frame.tilt-r { transform: rotate(3deg); }
+  .reels { flex: 1 1 0; min-width: 0; max-width: 340px; display: grid; gap: 16px; }
+  .showcase .reels .reel { max-width: none; width: 100%; transform: rotate(-1.5deg); }
+  .showcase .reels .reel + .reel { transform: rotate(1.5deg); }
+  .concept-note { order: 9; margin: 14px 0 0; font-size: .78rem; color: rgba(255, 255, 255, .55) !important; max-width: none !important; }
+  .tile.dark .art { margin-bottom: 14px; }
+  @media (max-width: 640px) {
+    .showcase { flex-direction: row; flex-wrap: wrap; gap: 16px; }
+    .showcase .phone-frame { width: calc(50% - 8px); max-width: none; order: 1; }
+    .reels { flex: 1 1 100%; max-width: none; order: 2; }
+  }
+  /* website tile: a real screen recording inside the browser frame */
+  .eg.on-light { background: var(--purple-soft); color: var(--purple); }
+  .browser.live { width: 100%; max-width: 260px; margin-top: 34px; background: #fff; box-shadow: 0 24px 44px -26px rgba(40, 20, 110, .55); }
+  .browser.live video { width: 100%; height: auto; display: block; }
+
   /* Ad makeovers: a simple sparkle icon */
   .wand {
     width: 104px; height: 104px; border-radius: 30px; display: grid; place-items: center;

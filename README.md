@@ -14,7 +14,7 @@
 | `pages.css` | Styles for the extra pages |
 | `_headers` | Security rules Netlify sends with every page |
 | `logo.svg` | Logo and browser-tab icon |
-| `img/` | The two example video ads (`app-ad.mp4`, `sneaker-ad.mp4`) and their still frames. To swap one, keep it silent and under about 1 MB, and use the same file name |
+| `img/` | The concept video ads (hair, soda, sneaker, lip) and the website screen recording (`site-demo.mp4`), with their still frames. To swap one, keep it silent and under about 1 MB, and use the same file name |
 
 ## Before going live
 

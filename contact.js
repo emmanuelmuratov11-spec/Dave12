@@ -19,7 +19,7 @@
     };
     function fields() {
       return Array.prototype.filter.call(form.querySelectorAll("input, textarea"), function (i) {
-        return i.name !== "bot-field" && i.type !== "radio";
+        return i.name !== "bot-field" && i.type !== "radio" && i.type !== "hidden" && i.closest("label");
       });
     }
     function valid(input) {
@@ -32,6 +32,7 @@
     }
     function mark(input, ok) {
       var label = input.closest("label");
+      if (!label) return;
       label.classList.toggle("invalid", !ok);
       label.querySelector(".err").textContent = ok ? "" : messages[input.name];
       input.setAttribute("aria-invalid", ok ? "false" : "true");

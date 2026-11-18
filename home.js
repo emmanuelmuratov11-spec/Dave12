@@ -192,5 +192,25 @@
       if (document.getElementById("applyCard").classList.contains("unlocked")) { try { sessionStorage.removeItem(SAVE_KEY); } catch (e) {} }
     }, 1500); });
 
+    /* Budget matches what they need: a one-time budget for websites, a monthly budget for everything else */
+    const needSel = form.elements.namedItem("need"), budgetSel = form.elements.namedItem("budget");
+    const budgetLabel = document.getElementById("budgetLabel");
+    const BUDGETS = {
+      monthly: { label: "Monthly marketing budget", prefix: "", ranges: ["Under $1,000", "$1,000 to $3,000", "$3,000 to $10,000", "Over $10,000"] },
+      website: { label: "Website budget (one-time)", prefix: "Website, one-time: ", ranges: ["Under $1,000", "$1,000 to $2,500", "$2,500 to $5,000", "Over $5,000"] }
+    };
+    function syncBudget(keep) {
+      const b = BUDGETS[needSel.value === "Website or design" ? "website" : "monthly"];
+      if (keep === undefined) keep = budgetSel.value;
+      if (budgetLabel.textContent !== b.label) {
+        budgetLabel.textContent = b.label;
+        budgetSel.replaceChildren(new Option("Choose a range", ""));
+        b.ranges.forEach(function (r) { budgetSel.add(new Option(r, b.prefix + r)); });
+      }
+      budgetSel.value = Array.prototype.some.call(budgetSel.options, function (o) { return o.value === keep; }) ? keep : "";
+    }
+    needSel.addEventListener("change", function () { syncBudget(); saveAnswers(); });
+    try { syncBudget(JSON.parse(sessionStorage.getItem(SAVE_KEY) || "{}").budget || ""); } catch (e) { syncBudget(""); }
+
     show(0);
   })();
